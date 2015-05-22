@@ -1,0 +1,29 @@
+# Associated files
+references/
+
+# Temp files
+*.aux
+*.bbl
+*.brf
+*.glo
+*.gls
+*.xdy
+*.toc
+*.lof
+*.lot
+*.out
+*.*.swp
+*.ist
+*.dvi
+*.bib.x
+*.cache
+*.txt
+
+# Log files
+*.blg
+*.log
+*.glg
+
+# Finished output
+img
+*.pdf

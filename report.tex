@@ -1,0 +1,194 @@
+% rubber: onchange report.glo 'makeglossaries report'
+% rubber: watch report.glo
+\documentclass[11pt,a4paper,oneside,notitlepage]{report}
+
+% \newcommand{\draft}
+\newif\ifdraft{}
+\drafttrue{}
+
+\usepackage{url}
+%\usepackage{feynmp}
+%\DeclareGraphicsRule{*}{mps}{*}{}
+\usepackage[UKenglish]{babel}
+\usepackage{pslatex}
+\usepackage{a4wide}
+\usepackage{graphics}
+\usepackage{amsmath, amssymb, amsthm, latexsym}
+\usepackage{braket}
+\usepackage{notoccite}
+\usepackage{slashed}
+\NeedsTeXFormat{LaTeX2e}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb} %For verbatim commands SaveVerb, UseVerb
+% \usepackage[small]{caption}  %caption settings [normal] bf,up
+\usepackage{eso-pic}
+\usepackage[pdftex]{graphicx}
+\usepackage{wasysym}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{arrows,shapes,patterns,decorations.pathmorphing,decorations.markings}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.10}
+\usepackage{type1cm}
+\usepackage{hyperref}
+\usepackage[all]{hypcap}
+\usepackage{datatool}        % For glossaries package, below
+\usepackage[toc]{glossaries}
+\usepackage{pdflscape}        % For the sidewaystable environment
+\usepackage[binary-units]{siunitx}
+\usepackage{dcolumn}
+%\usepackage{feynmf}
+%\usepackage{dot2texi}
+\usepackage[capitalize]{cleveref}
+\newcolumntype{d}[1]{D{.}{.}{#1} } % Decimal column type with #1 figures
+
+\ifdraft{}
+    \usepackage{lineno}
+    \newcommand\note[1]{\textcolor{red}{#1}}
+\else
+    \newcommand\note[1]{}
+\fi
+
+\hypersetup{pdfauthor={Timothy Brooks, Candan Dozen},
+    pdftitle={Technical report 2015},
+    pdfsubject={BeamLine for Schools 2015 project technical report},
+    pdfkeywords={BL4S} {Beamline} {HEP} {Particle Physics} {DAQ},
+    plainpages=false,
+    colorlinks,
+    linkcolor=blue,
+    citecolor=red}
+
+\tikzset{
+    photon/.style={decorate, decoration={snake,amplitude=2pt, segment length=5pt}},
+    particle/.style={postaction={decorate}, decoration={markings,mark=at position .5 with {\arrow{>}}}},
+    antiparticle/.style={postaction={decorate}, decoration={markings,mark=at position .5 with {\arrow{<}}}},
+    gluon/.style={decorate, decoration={coil,amplitude=3pt, segment length=5pt}},
+    gaugino/.style={decorate, decoration={snake,amplitude=2pt, segment length=5pt,markings,mark=at position .5 with {\arrow{>}}}},
+    antigaugino/.style={decorate, decoration={snake,amplitude=2pt, segment length=5pt,markings,mark=at position .5 with {\arrow{<}}}}
+}
+
+\makeglossaries{}
+\graphicspath{{./img/}}
+
+\setlength{\headheight}{14pt}
+\setlength{\oddsidemargin}{940mm} %0.5
+\setlength{\evensidemargin}{-3.25 in}
+\setlength{\textwidth}{150mm} %5.93in
+\ifdraft{}
+  \overfullrule=5pt
+\fi
+
+% Fix abstract to use normal fonts
+\usepackage[]{abstract}
+\renewcommand{\abstractnamefont}{\normalfont\Huge\bfseries}
+\renewcommand{\abstracttextfont}{\normalfont}
+
+\doublespacing{}
+\pagestyle{fancy}
+\addtolength{\headwidth}{\marginparsep}
+%    remember chapter title
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%    section number and title
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}{}}
+\if@twoside
+  \fancyfoot[RO,RE]{\thepage}
+\else
+  \fancyfoot[RO]{\thepage}
+\fi
+\fancyhead[RO]{\leftmark}
+\fancyhead[LO]{\rightmark}
+\cfoot{}
+
+\fancypagestyle{plain}{\renewcommand{\headrulewidth}{1pt}%
+        \renewcommand{\plainfootrulewidth}{0pt}%
+        \fancyhead[RO,LO]{}}
+\renewcommand{\baselinestretch}{1.5}
+
+% Command to force a long glossary entry, regardless of earlier usage
+\newcommand{\glslong}[1]{\glsreset{#1}\gls{#1}}
+\newcommand{\glspllong}[1]{\glsreset{#1}\glspl{#1}}
+\newcommand{\Glslong}[1]{\glsreset{#1}\Gls{#1}}
+\newcommand{\Glspllong}[1]{\glsreset{#1}\Glspl{#1}}
+
+%====
+%Insert to print the word ``draft'' across page
+\makeatletter
+  \protected@write\@auxout{}{\string\@xdylanguage{main}{english}}%
+  \def\input@path{{./tex_src/}{./figures/}}
+\ifdraft{}
+  \AddToShipoutPicture{%
+    \setlength{\@tempdimb}{.5\paperwidth}%
+    \setlength{\@tempdimc}{.5\paperheight}%
+    \setlength{\unitlength}{1pt}%
+    \put(\strip@pt\@tempdimb,\strip@pt\@tempdimc){%
+      \makebox(0,0){\rotatebox{45}{\textcolor[gray]{0.9}{\fontsize{5cm}{5cm}\selectfont{}}}}
+    }
+}
+\fi
+\makeatother
+%----
+
+\oddsidemargin 1.36cm
+\textwidth 14.7cm
+\setlength{\unitlength}{1mm}
+
+% Input definitions for glossary
+\input{terms}
+\SaveVerb{isem}|isEM|
+
+\begin{document}
+\ifdraft{}
+    \linenumbers{}
+\fi
+%\begin{fmffile}{fgraphs}
+
+% Switch to roman numerals for frontmatter
+\pagenumbering{roman}
+
+\begin{titlepage}
+  \thispagestyle{empty}
+\input{title}
+\end{titlepage}
+
+\fancyhead[LO]{}
+\begin{abstract}
+  \thispagestyle{empty}
+  \input{abstract}
+  \pagebreak
+\end{abstract}
+
+\setcounter{tocdepth}{4} % Include all the way down to subsections in ToC
+\tableofcontents
+\ifdraft{}
+\else{
+    \listoffigures
+    \listoftables
+}\fi
+
+\newpage
+
+% Switch back to arabic numerals
+\pagenumbering{arabic}
+%Main text goes in chapters
+\fancyhead[LO]{\rightmark}
+
+\input{introduction}
+
+\appendix
+
+\newpage
+\addcontentsline{toc}{chapter}{Bibliography}
+\fancyhead[LO]{}
+\bibliographystyle{style/my-lim-num}
+\bibliography{bib/report}
+
+\newpage
+\printglossary{}
+
+%\end{fmffile}
+\end{document}
+% vim: path+=./tex_src/,
